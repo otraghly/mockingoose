@@ -20,26 +20,7 @@ mongoose.createConnection = jest.fn().mockReturnValue({
   },
 });
 
-const ops = [
-  'find',
-  'findOne',
-  'count',
-  'countDocuments',
-  'estimatedDocumentCount',
-  'distinct',
-  'findOneAndUpdate',
-  'findOneAndDelete',
-  'findOneAndRemove',
-  'findOneAndReplace',
-  'remove',
-  'update',
-  'updateOne',
-  'updateMany',
-  'deleteOne',
-  'deleteMany',
-  'save',
-  'aggregate',
-];
+const ops = ['find', 'findOne', 'count', 'countDocuments', 'estimatedDocumentCount', 'distinct', 'findOneAndUpdate', 'findOneAndDelete', 'findOneAndRemove', 'findOneAndReplace', 'remove', 'update', 'updateOne', 'updateMany', 'deleteOne', 'deleteMany', 'save', 'aggregate', '$save'];
 
 const mockedReturn = async function(cb) {
   const {
@@ -62,7 +43,7 @@ const mockedReturn = async function(cb) {
     mock = await mock(this);
   }
 
-  if (!mock && op === 'save') {
+  if (!mock && op.includes('save')) {
     mock = this;
   }
 
@@ -239,7 +220,7 @@ mongoose.Model.insertMany = jest
     return mockedReturn.call(this, cb);
   })
 
-const instance = ['remove', 'save'];
+const instance = ['remove', 'save', '$save'];
 
 instance.forEach(methodName => {
   mongoose.Model.prototype[methodName] = jest
